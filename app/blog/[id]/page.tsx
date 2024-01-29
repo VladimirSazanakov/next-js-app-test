@@ -1,3 +1,5 @@
+import { Metadata } from "next";
+
 type TProps = {
   params: {
     id: string;
@@ -11,11 +13,11 @@ async function getData(id: string) {
     }
   });
 
-  if(!response.ok){ throw new Error("Unable to fetch posts")};
+  if (!response.ok) { throw new Error("Unable to fetch posts") };
   return response.json();
 }
 
-export async function generateMetadata({params: {id}
+export async function generateMetadata({ params: { id }
 }: TProps): Promise<Metadata> {
   const post = await getData(id);
   return {
@@ -23,12 +25,12 @@ export async function generateMetadata({params: {id}
   }
 }
 
-export default async function Post({params: {id}}: TProps){
+export default async function Post({ params: { id } }: TProps) {
   const post = await getData(id);
   return (
     <>
-    <h1>{post.title}</h1>
-    <p>{post.body}</p>
+      <h1>{post.title}</h1>
+      <p>{post.body}</p>
 
     </>
   )
