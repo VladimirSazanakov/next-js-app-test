@@ -1,9 +1,11 @@
 'use client'
 
+import useSWR from "swr";
 import Link from "next/link";
-import {shallow} from 'zustand/shallow';
-import { usePost } from "@/store";
-import { useEffect, useState } from "react";
+import { getAllPosts } from "@/public/getPosts";
+// import {shallow} from 'zustand/shallow';
+// import { usePost } from "@/store";
+// import { useEffect, useState } from "react";
 
 
 type TPost = {
@@ -18,17 +20,18 @@ type TProps = {
 }
 
 const Posts = () =>{
-  const [posts, isLoading, getAllPosts] = usePost(state =>[
-    state.posts, 
-    state.isLoading, 
-    state.getAllPosts],
-    shallow
-    );
+ const {data: posts, isLoading} = useSWR('posts', getAllPosts)
+  // const [posts, isLoading, getAllPosts] = usePost(state =>[
+  //   state.posts, 
+  //   state.isLoading, 
+  //   state.getAllPosts],
+  //   shallow
+  //   );
 
-    useEffect(()=>{
-      getAllPosts();
-      console.log('getAllPosts')
-    },[])
+  //   useEffect(()=>{
+  //     getAllPosts();
+  //     console.log('getAllPosts')
+  //   },[])
 
     return (
     isLoading?
