@@ -1,4 +1,10 @@
+'use client'
+
 import Link from "next/link";
+import {shallow} from 'zustand/shallow';
+import { usePost } from "@/store";
+import { useEffect, useState } from "react";
+
 
 type TPost = {
   id: number;
@@ -11,16 +17,30 @@ type TProps = {
   posts: Array<TPost>
 }
 
-const Posts = ({posts}: TProps) =>{
-  return (
+const Posts = () =>{
+  const [posts, isLoading, getAllPosts] = usePost(state =>[
+    state.posts, 
+    state.isLoading, 
+    state.getAllPosts],
+    shallow
+    );
+
+    useEffect(()=>{
+      getAllPosts();
+      console.log('getAllPosts')
+    },[])
+
+    return (
+    isLoading?
+    (<h3>Loading...</h3>):
     <ul>
-    {posts.map((post: any) => (
-      <li key={post.id}>
-        <Link href={`/blog/${post.id}`}>{post.title}</Link>
-      </li>
-    )
+        {posts.map((post: any) => (
+          <li key={post.id}>
+            <Link href={`/blog/${post.id}`}>{post.title}</Link>
+          </li>
+        )
     )}
-  </ul>
+    </ul>
   )
 }
 
